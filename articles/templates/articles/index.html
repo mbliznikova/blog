@@ -1,0 +1,71 @@
+{% extends 'articles/base.html' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1>Margarita's Blog</h1>
+        <p>This project was developed primarily for learning Django, Python
+            and Selenium. Nothing to see here, move along!</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        {% for article in latest_articles_list %}
+        <div class="col-md-4">
+            <h2>{{ article.article_header|truncatechars_html:20 }}</h2>
+            <p>{{ article.article_text|truncatewords:30 }}</p>
+            <p><a class="btn btn-default"
+                  href="{% url 'articles:article_discussion' article.id %}"
+                  role="button">More &raquo;</a></p>
+        </div>
+
+        {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div class="row">
+        {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% comment %}
+{% load staticfiles %}
+<html>
+<head>
+    <title>Articles</title>
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'articles/articles.css' %}">
+</head>
+<body>
+<div>
+    <h1><a href="/">Articles</a></h1>
+</div>
+{% if latest_articles_list %}
+<ul>
+    {% for article in latest_articles_list %}
+    <div>
+        <li><h2><a href="{% url 'articles:article_discussion' article.id %}">{{
+            article.article_header }}</a></h2></li>
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+<div>
+    <p>No articles are available.</p>
+</div>
+{% endif %}
+<br>
+<a href="/articles/new_article">
+    <input type="button" value="Create new article" name="new_article_button"/>
+</a>
+</body>
+</html>
+{% endcomment %}
